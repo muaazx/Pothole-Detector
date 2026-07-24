@@ -1,0 +1,6 @@
+{
+  "name": "Pothole Reporter",
+  "description": "A premium dark-themed pothole reporting application utilizing a Sophisticated Dark theme, with administrative dashboard, detailed map integration, upvoting systems, and local news alerts.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
