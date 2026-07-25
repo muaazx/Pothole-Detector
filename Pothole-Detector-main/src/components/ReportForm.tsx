@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { 
   Upload, Image as ImageIcon, MapPin, CheckCircle, AlertOctagon, 
@@ -25,6 +25,26 @@ function LocationPicker({ position, setPosition }: { position: [number, number] 
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   })} /> : null;
+}
+
+// Component to handle map pan dynamically when center coordinates change
+function ChangeMapView({ center }: { center: [number, number] }) {
+  const map = useMap();
+  const prevCenterRef = useRef<[number, number] | null>(null);
+
+  useEffect(() => {
+    if (center[0] && center[1]) {
+      const hasChanged = !prevCenterRef.current || 
+        prevCenterRef.current[0] !== center[0] || 
+        prevCenterRef.current[1] !== center[1];
+      if (hasChanged) {
+        map.flyTo(center, 14, { animate: true, duration: 0.8 });
+        prevCenterRef.current = center;
+      }
+    }
+  }, [center, map]);
+
+  return null;
 }
 
 interface ReportFormProps {
@@ -315,6 +335,7 @@ export default function ReportForm({ onSuccess }: ReportFormProps) {
                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                     attribution='&copy; CARTO'
                   />
+                  <ChangeMapView center={[lat, lng]} />
                   <LocationPicker position={[lat, lng]} setPosition={(pos) => { setLat(pos[0]); setLng(pos[1]); }} />
                 </MapContainer>
                 <div className="absolute bottom-2 right-2 z-[1000] bg-[var(--bg-surface-elevated)]/80 backdrop-blur-sm border border-[var(--border-glass)] text-[9px] text-[var(--text-secondary)] px-2 py-0.5 rounded">
