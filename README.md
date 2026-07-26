@@ -224,7 +224,7 @@ Available backend routes include:
 
 Try it here:
 
-**https://pothole-detector-g61s.vercel.app**
+**https://pothole-detector-seven.vercel.app**
 
 ---
 
